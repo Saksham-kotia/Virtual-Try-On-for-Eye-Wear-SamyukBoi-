@@ -1,0 +1,110 @@
+
+
+## 🧠 1. Make the Minor Fixes
+
+These are small but important pre-training touch-ups:
+
+| File                         | Fix                                                                             |
+| ---------------------------- | ------------------------------------------------------------------------------- |
+| `DataLoadingPreprocesing.py` | Replace dummy label generation with actual labels (from filenames or metadata). |
+| `MainFunction.py`            | Fix variable typo (`celeba_zip_path` → `dataset_zip_path`).                     |
+| `FaceShapeClassifier.py`     | Optionally replace hardcoded labels with dynamic ones (from LabelEncoder).      |
+| `CompletePipeline.py`        | Add print/log statements to monitor progress during long runs.                  |
+
+✅ None of these change architecture — they just polish functionality.
+
+---
+
+## 🧩 2. Train the CNN Model
+
+Once those edits are done:
+
+```bash
+python training_pipeline/MainFunction.py
+```
+
+That will:
+
+* Download your dataset (UTKFace or CelebA)
+* Preprocess it
+* Train the CNN face shape classifier
+* Save:
+
+  * `models/face_shape_classifier.h5`
+  * `models/label_encoder.pkl`
+
+✅ After this, your FastAPI backend can **instantly start using the trained model** — no code changes needed.
+
+---
+
+## 🔗 3. Pass Integration Info to the Frontend Team
+
+Tell them this (you can literally copy-paste 👇):
+
+---
+
+### **Frontend–Backend Integration Guide**
+
+**Base URL:**
+`http://localhost:8000` (or your deployed API URL)
+
+**Endpoints:**
+
+| Step                  | Endpoint                   | Method | Description                    |
+| --------------------- | -------------------------- | ------ | ------------------------------ |
+| 1️⃣ Upload Image      | `/api/upload`              | POST   | Upload user face image         |
+| 2️⃣ Classify Face     | `/api/classify-face-shape` | POST   | Predict face shape             |
+| 3️⃣ Recommend Glasses | `/api/recommend-glasses`   | POST   | Get matching glasses           |
+| 4️⃣ Virtual Try-On    | `/api/overlay`             | POST   | Overlay chosen glasses on face |
+
+**Static Directories:**
+
+* `/accessories/glasses/` → Eyewear PNGs
+* `/outputs/demo_images/` → Generated try-on results
+* `/outputs/user_uploads/` → User face uploads
+
+**Required Metadata:**
+
+* `accessories/metadata.json` — list of all glasses and their properties.
+
+**Response Example (Overlay):**
+
+```json
+{
+  "success": true,
+  "overlaid_image_path": "outputs/demo_images/<id>_overlay.png",
+  "overlay_params": {
+    "center": [310, 245],
+    "width": 145,
+    "angle": 0.03,
+    "scale": 0.97
+  }
+}
+```
+
+---
+
+✅ Once they use those routes, your backend + frontend will sync perfectly.
+
+---
+
+## 🚀 4. (Optional) Add One Combined Route
+
+Later, if you want a single API call that:
+
+> Uploads → Classifies → Recommends → Overlays
+
+I can help you add `/api/complete-tryon` which automates all 4 steps behind one endpoint — super helpful for production demos or simplified frontend calls.
+
+---
+
+### 🎯 TL;DR
+
+You’ve now completed:
+✅ Data pipeline
+✅ Training module
+✅ Backend service architecture
+✅ End-to-end API integration
+✅ Frontend readiness
+
+
