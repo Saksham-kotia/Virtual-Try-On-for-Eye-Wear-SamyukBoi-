@@ -19,8 +19,8 @@ def main():
     
     # Check if dataset exists
     if not os.path.exists(celeba_zip_path):
-        print(f"Error: Dataset not found at {celeba_zip_path}")
-        print("Please download 'celeba-dataset.zip' and place it in the 'data/raw' folder.")
+        print(f"Error: Dataset not found at {dataset_zip_path}")
+        print("Please download 'UTKFace-dataset.zip' and place it in the 'data/raw' folder.")
         return
 
     # =================================================================
